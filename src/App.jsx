@@ -4,7 +4,7 @@ import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import HomePage from "./components/HomePage.jsx";
 import RegisterLoginPage from "./components/RegisterLoginPage.jsx";
-import Dashboard from "./components/Dashboard.jsx";
+import EmployeeDashboard from "./components/EmployeeDashboard.jsx";
 import IdeaSubmissionForm from "./components/IdeaSubmission.jsx";
 import ViewIdeas from "./components/ViewIdeas.jsx";
 import VotingSystem from "./components/VotingSystem.jsx";
@@ -25,7 +25,7 @@ function App() {
           path="/registerloginpage"
           element={<RegisterLoginPage />}
         ></Route>
-        <Route path="/dashboard" element={<Dashboard />}></Route>
+        <Route path="/employeedashboard" element={<EmployeeDashboard />}></Route>
         <Route
           path="/ideasubmissionform"
           element={<IdeaSubmissionForm />}

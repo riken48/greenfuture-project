@@ -100,7 +100,7 @@ const RegisterLoginForm = () => {
         loginFormData.loginPassword === "pass"
       ) {
         alert("Login successful!");
-        navigate("/dashboard");
+        navigate("/employeedashboard");
       } else if (
         loginFormData.loginEmail === "a@a.com" &&
         loginFormData.loginPassword === "pass"
