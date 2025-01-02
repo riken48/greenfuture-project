@@ -5,6 +5,19 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function ManagerViewIdeas() {
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const fetchIdeas = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:4000/ideas");
+  //       setIdeas(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching ideas:", error);
+  //     }
+  //   };
+  
+  //   fetchIdeas();
+  // }, []);
+
   const [ideas, setIdeas] = useState([
     {
       id: 1,
@@ -87,6 +100,11 @@ function ManagerViewIdeas() {
                 <p className="card-text">
                   <strong>Votes: </strong>
                   {idea.votes}
+                </p>
+
+                <p className="card-text">
+                  <strong>Evaluation Status: </strong>
+                  In-progress
                 </p>
 
                 <p className="card-text">Tags: {idea.tags}</p>

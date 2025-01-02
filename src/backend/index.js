@@ -26,6 +26,7 @@ mongoose.connect(process.env.DB_URI, dbOptions)
 
 
 const port = process.env.PORT || 4000
-const server = app.listen(port, () => {
-  console.log("Server is running on port 4000.");
-});
+// const server = app.listen(port, () => {
+//   console.log("Server is running on port ${port} 4000.");
+// });
+app.listen(port, () => console.log(`Server running on port ${port}.`));

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const RegisterLoginForm = () => {
   const [regFormData, setRegFormData] = useState({
@@ -76,42 +77,80 @@ const RegisterLoginForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleRegSubmit = (e) => {
+
+  const handleRegSubmit = async (e) => {
     e.preventDefault();
     if (validateRegForm()) {
-      console.log("Registration submitted:", regFormData);
-      alert("Registration Successful!");
-      setRegFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      });
-      setRegErrors({});
+        try {
+            const response = await axios.post("http://localhost:4000/registerloginform", regFormData);
+            alert(response.data.message);
+            setRegFormData({
+                firstName: "",
+                lastName: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+            });
+            setRegErrors({});
+        } catch (error) {
+            alert(error.response?.data?.error || "Registration failed.");
+        }
     }
-  };
+};
 
-  const handleLoginSubmit = (e) => {
+// LOGIN BUTTON
+
+  // const handleLoginSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (validateLoginForm()) {
+  //     if (
+  //       loginFormData.loginEmail === "e@e.com" &&
+  //       loginFormData.loginPassword === "pass"
+  //     ) {
+  //       alert("Login successful!");
+  //       navigate("/employeedashboard");
+  //     } else if (
+  //       loginFormData.loginEmail === "a@a.com" &&
+  //       loginFormData.loginPassword === "pass"
+  //     ) {
+  //       alert("Login successful!");
+  //       navigate("/managerdashboard");
+  //     } else {
+  //       alert("Invalid email or password.");
+  //     }
+  //   }
+  // };
+
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     if (validateLoginForm()) {
-      if (
-        loginFormData.loginEmail === "e@e.com" &&
-        loginFormData.loginPassword === "pass"
-      ) {
-        alert("Login successful!");
-        navigate("/employeedashboard");
-      } else if (
-        loginFormData.loginEmail === "a@a.com" &&
-        loginFormData.loginPassword === "pass"
-      ) {
-        alert("Login successful!");
-        navigate("/innovationmanagerdashboard");
-      } else {
-        alert("Invalid email or password.");
+      try {
+        const response = await axios.post("http://localhost:4000/login", {
+          email: loginFormData.loginEmail,
+          password: loginFormData.loginPassword,
+        });
+  
+        alert(response.data.message);
+  
+        // Redirect based on userType
+        switch (response.data.userType) {
+          case "employee":
+            navigate("/employeedashboard");
+            break;
+          case "manager":
+          case "admin":
+            navigate("/innovationmanagerdashboard");
+            break;
+          default:
+            alert("User type not recognised");
+        }
+      } catch (error) {
+        alert(error.response?.data?.error || "Login failed");
       }
     }
   };
+  
+  
 
   const handleForgotPasswordSubmit = (e) => {
     e.preventDefault();

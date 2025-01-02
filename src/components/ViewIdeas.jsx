@@ -1,10 +1,24 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
 
 function ViewIdeas() {
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const fetchIdeas = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:4000/ideas");
+  //       setIdeas(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching ideas:", error);
+  //     }
+  //   };
+  
+  //   fetchIdeas();
+  // }, []);
+  
   const [ideas, setIdeas] = useState([
     {
       id: 1,
@@ -59,13 +73,31 @@ function ViewIdeas() {
     setSelectedIdea(idea);
   };
 
-  const handleVote = (id) => {
-    alert(`You voted for Idea #${id}`);
-    setIdeas(
-      ideas.map((idea) =>
-        idea.id === id ? { ...idea, votes: idea.votes + 1 } : idea
-      )
-    );
+  // const handleVote = (id) => {
+  //   alert(`You voted for Idea #${id}`);
+  //   setIdeas(
+  //     ideas.map((idea) =>
+  //       idea.id === id ? { ...idea, votes: idea.votes + 1 } : idea
+  //     )
+  //   );
+  // };
+
+  const handleVote = async (id) => {
+    try {
+      const response = await axios.post("http://localhost:4000/vote", { id });
+      const updatedIdea = response.data.idea;
+  
+      setIdeas((prevIdeas) =>
+        prevIdeas.map((idea) =>
+          idea.id === updatedIdea._id ? { ...idea, votes: updatedIdea.votes } : idea
+        )
+      );
+  
+      alert("Vote counted!");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to submit your vote.");
+    }
   };
 
   const handleCollaborate = () => {
@@ -103,7 +135,7 @@ function ViewIdeas() {
                   {idea.votes}
                 </p>
 
-                <p className="card-text">Progress: {idea.progress}</p>  
+                <p className="card-text"><strong>Progress:</strong> {idea.progress}</p>  
 
                 <p className="card-text">Tags: {idea.tags}</p>
 

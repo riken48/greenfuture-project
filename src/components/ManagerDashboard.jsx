@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, useNavigate } from "react-router-dom";
 import "../style/Global.css";
 
-function InnovationManagerDashboard() {
+function ManagerDashboard() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -102,4 +102,4 @@ function InnovationManagerDashboard() {
   );
 }
 
-export default InnovationManagerDashboard;
+export default ManagerDashboard;

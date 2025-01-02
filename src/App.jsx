@@ -8,7 +8,7 @@ import EmployeeDashboard from "./components/EmployeeDashboard.jsx";
 import IdeaSubmissionForm from "./components/IdeaSubmission.jsx";
 import ViewIdeas from "./components/ViewIdeas.jsx";
 import VotingSystem from "./components/VotingSystem.jsx";
-import InnovationManagerDashboard from "./components/InnovationManagerDashboard.jsx";
+import ManagerDashboard from "./components/ManagerDashboard.jsx";
 import AIFilter from "./components/AIFilter";
 import ManagerViewIdeas from "./components/ManagerViewIdeas.jsx";
 import EvaluateIdeas from "./components/EvaluateIdeas.jsx";
@@ -33,8 +33,8 @@ function App() {
         <Route path="/viewideas" element={<ViewIdeas />}></Route>
         <Route path="/votingsystem" element={<VotingSystem />}></Route>
         <Route
-          path="/innovationmanagerdashboard"
-          element={<InnovationManagerDashboard />}
+          path="/managerdashboard"
+          element={<ManagerDashboard />}
         ></Route>
         <Route path="/aifilter" element={<AIFilter />}></Route>
         <Route path="/managerviewideas" element={<ManagerViewIdeas />}></Route>

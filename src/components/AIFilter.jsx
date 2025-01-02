@@ -3,6 +3,20 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function AIFilter({ ideas, onFilter }) {
+
+    // useEffect(() => {
+  //   const fetchIdeas = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:4000/ideas");
+  //       setIdeas(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching ideas:", error);
+  //     }
+  //   };
+  
+  //   fetchIdeas();
+  // }, []);
+
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 

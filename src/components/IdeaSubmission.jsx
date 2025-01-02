@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
 
 function IdeaSubmissionForm() {
   const [formData, setFormData] = useState({
     ideaTitle: "",
     ideaDescription: "",
-    ideaTag: "", // Add the ideaTag field here
+    ideaTag: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -28,17 +29,38 @@ function IdeaSubmissionForm() {
     return Object.keys(formErrors).length === 0;
   }
 
+  // function handleSubmit(e) {
+  //   e.preventDefault();
+  //   if (validateForm()) {
+  //     console.log("Submitted idea:", formData);
+  //     setSuccessMessage("Idea submitted successfully!");
+  //     setFormData({
+  //       ideaTitle: "",
+  //       ideaDescription: "",
+  //       ideaTag: "", // Reset ideaTag after submission
+  //     });
+  //     setErrors({});
+  //   }
+  // }
+
   function handleSubmit(e) {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Submitted idea:", formData);
-      setSuccessMessage("Idea submitted successfully!");
-      setFormData({
-        ideaTitle: "",
-        ideaDescription: "",
-        ideaTag: "", // Reset ideaTag after submission
-      });
-      setErrors({});
+      axios
+        .post("http://localhost:4000/ideasubmissionform", formData)
+        .then((response) => {
+          setSuccessMessage(response.data.message);
+          setFormData({
+            ideaTitle: "",
+            ideaDescription: "",
+            ideaTag: "",
+          });
+          setErrors({});
+        })
+        .catch((error) => {
+          console.error(error);
+          alert(error.response?.data?.error || "Idea submission failed!");
+        });
     }
   }
 
@@ -48,7 +70,7 @@ function IdeaSubmissionForm() {
       <button
         className="btn btn-secondary position-absolute"
         style={{ top: "80px", left: "20px", zIndex: "1" }}
-        onClick={() => navigate(-1)} // Go back to the previous page
+        onClick={() => navigate(-1)}
       >
         Back
       </button>

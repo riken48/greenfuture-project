@@ -5,6 +5,19 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function ManageRewards() {
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const fetchIdeas = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:4000/ideas");
+  //       setIdeas(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching ideas:", error);
+  //     }
+  //   };
+  
+  //   fetchIdeas();
+  // }, []);
+
   const [ideas, setIdeas] = useState([
     {
       id: 1,
@@ -49,9 +62,31 @@ function ManageRewards() {
     setSelectedIdea(idea);
   };
 
-  const handleCollaborate = () => {
-    alert("Do you confirm?");
+  const handleGiveReward = (ideaId) => {
+    const reward = prompt("Enter reward for the idea:");
+  
+    if (reward) {
+      fetch(`http://localhost:4000/ideas/${ideaId}/reward`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reward }),
+      })
+        .then((res) => res.json())
+        .then((updatedIdea) => {
+          setIdeas((prevIdeas) =>
+            prevIdeas.map((idea) =>
+              idea._id === updatedIdea._id ? updatedIdea : idea
+            )
+          );
+          alert("Reward assigned successfully!");
+        })
+        .catch((error) => console.error("Error assigning reward:", error));
+    }
   };
+
+  // const handleGiveReward = () => {
+  //   alert("Do you confirm?");
+  // };
 
   return (
     <div className="container mt-5">
@@ -82,6 +117,11 @@ function ManageRewards() {
                 <p className="card-text">
                   <strong>Votes: </strong>
                   {idea.votes}
+                </p>
+
+                <p className="card-text">
+                  <strong>Evaluation Status: </strong>
+                  In-progress
                 </p>
 
                 <p className="card-text">Tags: Logistics, Communication, AI</p>
@@ -131,7 +171,7 @@ function ManageRewards() {
                 <button
                   type="button"
                   className="btn customBtn"
-                  onClick={handleCollaborate}
+                  onClick={handleGiveReward}
                 >
                   Give Reward
                 </button>

@@ -5,6 +5,19 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function EvaluateIdeas() {
   const navigate = useNavigate();
 
+    // useEffect(() => {
+  //   const fetchIdeas = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:4000/ideas");
+  //       setIdeas(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching ideas:", error);
+  //     }
+  //   };
+  
+  //   fetchIdeas();
+  // }, []);
+
   const [ideas, setIdeas] = useState([
     {
       id: 1,
@@ -54,9 +67,28 @@ function EvaluateIdeas() {
     setSelectedIdea(idea);
   };
 
-  const handleCollaborate = () => {
-    alert("Do you confirm?");
+  // const handleReview= () => {
+  //   alert("Do you confirm?");
+  // };
+
+  const handleReview = (ideaId, status) => {
+    fetch(`http://localhost:4000/ideas/${ideaId}/evaluate`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ evaluationStatus: status }),
+    })
+      .then((res) => res.json())
+      .then((updatedIdea) => {
+        setIdeas((prevIdeas) =>
+          prevIdeas.map((idea) =>
+            idea._id === updatedIdea._id ? updatedIdea : idea
+          )
+        );
+      })
+      .catch((error) => console.error("Error updating evaluation:", error));
   };
+
+
 
   return (
     <div className="container mt-5">
@@ -87,6 +119,11 @@ function EvaluateIdeas() {
                 <p className="card-text">
                   <strong>Votes: </strong>
                   {idea.votes}
+                </p>
+
+                <p className="card-text">
+                  <strong>Evaluation Status: </strong>
+                  In-progress
                 </p>
 
                 <p className="card-text">Tags: {idea.tags}</p>
@@ -133,21 +170,40 @@ function EvaluateIdeas() {
                 <p>{selectedIdea.description}</p>
               </div>
               <div className="modal-footer">
+
                 {/* Evaluation */}
-                <button
+
+
+                {/* <button
                   type="button"
                   className="btn customBtn"
-                  onClick={handleCollaborate}
+                  onClick={handleReview}
                 >
                   Approve
                 </button>
                 <button
                   type="button"
                   className="btn btn-danger"
-                  onClick={handleCollaborate}
+                  onClick={handleReview}
                 >
                   Decline
-                </button>
+                </button> */}
+
+              <button
+                type="button"
+                className="btn customBtn"
+                onClick={() => handleReview(selectedIdea._id, "Approved")}
+              >
+                Approve
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => handleReview(selectedIdea._id, "Declined")}
+              >
+                Decline
+              </button>
+
                 <button
                   type="button"
                   className="btn btn-secondary"
